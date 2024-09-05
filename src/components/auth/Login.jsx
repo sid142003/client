@@ -33,37 +33,51 @@ function EnhancedLogin({ history }) {  // If using React Router, you can utilize
     };
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        if (!email || !password) {
-            toast.error("Please enter all fields.");
-            return;
-        }
-        if (!validateEmail(email)) {
-            toast.error("Please enter a valid email address.");
-            return;
-        }
-        setLoading(true);
-        try {
-            const response = await axios.post(`${API_URL}/users/login`, { email, password });
-            if (response.status != 200) {
-                toast.error("Invalid login credentials.");
-               setEmail('');
-                setPassword('');
+    e.preventDefault();
+    
+    if (!email || !password) {
+        toast.error("Please enter all fields.");
+        return;
+    }
 
+    if (!validateEmail(email)) {
+        toast.error("Please enter a valid email address.");
+        return;
+    }
 
-            }
+    setLoading(true);
+    
+    try {
+        const response = await axios.post(`${API_URL}/users/login`, { email, password });
+        
+        // Assuming that any non-200 response is caught in the catch block, you don’t need this condition
+        if (response.status === 200) {
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user)); 
-
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            
             toast.success("Login successful!");
+            
+            // Navigate to the events page after 1 second
             setTimeout(() => {
-                navigate('/events'); 
-        },1000) }catch (error) {
-            toast.error("An error occurred during login. Please try again.");
-            console.error('Login error:', error);
+                navigate('/events');
+            }, 1000);
         }
+    } catch (error) {
+        // Handling specific error scenarios if available
+        if (error.response && error.response.status === 401) {
+            toast.error("Invalid login credentials.");
+            setEmail('');
+            setPassword('');
+        } else {
+            toast.error("An error occurred during login. Please try again.");
+        }
+        console.error('Login error:', error);
+    } finally {
+        // Always ensure loading state is turned off
         setLoading(false);
-    };
+    }
+};
+
 
     
 

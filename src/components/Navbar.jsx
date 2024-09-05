@@ -5,25 +5,21 @@ import { FaBars } from 'react-icons/fa';
 import Logo from '../assets/logo.webp';
 function Navbar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [token, setToken] = React.useState(false);
+    
+    
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    useEffect(() => {   
-      const token = localStorage.getItem('token');
-        if (token) {
-            console.log('token exists');
-            setToken(true);
-           
 
-        }
-    }, []);
+   
+    
+    const token = localStorage.getItem('token');
 
 
     const handleSignOut = () => {
         localStorage.removeItem('token');
-        setToken(false);
+      
         navigate('/');
     };
 
