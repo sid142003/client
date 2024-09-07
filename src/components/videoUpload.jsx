@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import { API_URL } from "./constant/constant";
 
 const InputStyled = styled(Input)({
   display: 'none', // Hides the default HTML file input styling
@@ -25,7 +26,7 @@ function VideoUpload() {
   useEffect(() => {
     const fetchVideos = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/videoList/getVideo`, {
+            const response = await axios.get(`${API_URL}/videoList/getVideo`, {
                 params: { eventId }  // Pass eventId as a query parameter
             });
             console.log('Videos:', response.data);
@@ -62,7 +63,7 @@ function VideoUpload() {
 
     try {
       const uploadResponse = await axios.post(
-        `http://localhost:5000/api/upload`, // Updated URL to include eventId and viewer
+        `${API_URL}/upload`, // Updated URL to include eventId and viewer
         formData,
         {
           headers: {
@@ -77,7 +78,7 @@ function VideoUpload() {
 console.log(uploadResponse.data.url);
       setVideoUrl(uploadResponse.data.url);
       const datatopodt=  await axios.post( 
-          `http://localhost:5000/api/videoList/upload`, // Updated URL to include eventId and viewer
+          `${API_URL}/videoList/upload`, // Updated URL to include eventId and viewer
           {
             videoUrl: videoUrl,
             organizer: organizerId,
@@ -115,7 +116,7 @@ console.log(uploadResponse.data.url);
     Upload
   </Button>
 </Box>
-:""}
+     :""}
 
 
 <Grid container spacing={5}>
