@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { API_URL } from "./constant/constant";
+import { API_URL } from './constant/constant';
 
 const InputStyled = styled(Input)({
   display: 'none', // Hides the default HTML file input styling
@@ -75,7 +75,7 @@ function VideoUpload() {
       if (uploadResponse.status != 200) {
         toast.error("Failed to upload image");
       }
-console.log(uploadResponse.data.url);
+console.log("HELLO",uploadResponse.data.url);
       setVideoUrl(uploadResponse.data.url);
       const datatopodt=  await axios.post( 
           `${API_URL}/videoList/upload`, // Updated URL to include eventId and viewer
@@ -86,8 +86,11 @@ console.log(uploadResponse.data.url);
           }
         );
 
+        console.log('Video uploaded is:', datatopodt);
 
-        // console.log('Video uploaded successfully:', datatopodt);
+        if((datatopodt.status != 201)){
+          toast.error('Failed to upload video');
+        }
         toast.success('Video uploaded successfully');
         setVideoUrl('');
         setFile(null);
@@ -116,7 +119,7 @@ console.log(uploadResponse.data.url);
     Upload
   </Button>
 </Box>
-     :""}
+:""}
 
 
 <Grid container spacing={5}>
