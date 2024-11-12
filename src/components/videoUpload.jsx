@@ -53,8 +53,8 @@ function VideoUpload() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!file || !organizerId || !eventId) {
-      toast.error('Please ensure all required fields are filled.');
-      return;
+        toast.error('Please ensure all required fields are filled.');
+        return;
     }
 
     setLoading(true);
@@ -62,46 +62,52 @@ function VideoUpload() {
     formData.append('image', file);
 
     try {
-      const uploadResponse = await axios.post(
-        `${API_URL}/upload`, // Updated URL to include eventId and viewer
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        const uploadResponse = await axios.post(
+            `${API_URL}/upload`, // Updated URL to include eventId and viewer
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
+        if (uploadResponse.status !== 200) {
+            setLoading(false);
+            toast.error("Failed to upload image");
+            return;
         }
-      );
-      setLoading(false);
-      if (uploadResponse.status != 200) {
-        toast.error("Failed to upload image");
-      }
-console.log("HELLO",uploadResponse.data.url);
-      setVideoUrl(uploadResponse.data.url);
-      const datatopodt=  await axios.post( 
-          `${API_URL}/videoList/upload`, // Updated URL to include eventId and viewer
-          {
-            videoUrl: videoUrl,
-            organizer: organizerId,
-            eventId,
-          }
+
+        console.log("HELLO", uploadResponse.data.url);
+
+        const datatopodt = await axios.post( 
+            `${API_URL}/videoList/upload`, // Updated URL to include eventId and viewer
+            {
+                videoUrl: uploadResponse.data.url,
+                organizer: organizerId,
+                eventId,
+            }
         );
 
         console.log('Video uploaded is:', datatopodt);
 
-        if((datatopodt.status != 201)){
-          toast.error('Failed to upload video');
+        if (datatopodt.status !== 201) {
+            setLoading(false);
+            toast.error('Failed to upload video');
+            return;
         }
-        toast.success('Video uploaded successfully');
-        setVideoUrl('');
-        setFile(null);
 
+        toast.success('Video uploaded successfully');
+        setVideoUrl(''); // Clear video URL if needed after successful upload
+        setFile(null);   // Clear the file from state after successful upload
     } catch (error) {
-      setLoading(false);
-      console.error('Error:', error);
-      toast.error('Error uploading video.');
+        setLoading(false);
+        console.error('Error:', error);
+        toast.error('Error uploading video: ' + error.message);
+    } finally {
+        setLoading(false); // Ensure loading is turned off even if there's an error
     }
-  };
-  
+};
 
 
   return (

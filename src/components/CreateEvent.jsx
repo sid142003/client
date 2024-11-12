@@ -15,7 +15,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import axios from "axios";
 import { API_URL } from "./constant/constant";
 import { toast, ToastContainer } from "react-toastify";
-
+import {API_URL} from '../constant/constant';
 function CreateEvent() {
   const [formData, setFormData] = useState({
     title: "",
@@ -67,7 +67,7 @@ function CreateEvent() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/upload`,
+        `${API_URL}/upload`,
         formData,
         {
           headers: {
