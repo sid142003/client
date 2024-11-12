@@ -13,7 +13,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import axios from "axios";
-import { API_URL } from "./constant/constant";
 import { toast, ToastContainer } from "react-toastify";
 import {API_URL} from '../constant/constant';
 
