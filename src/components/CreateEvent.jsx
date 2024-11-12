@@ -16,6 +16,7 @@ import axios from "axios";
 import { API_URL } from "./constant/constant";
 import { toast, ToastContainer } from "react-toastify";
 import {API_URL} from '../constant/constant';
+
 function CreateEvent() {
   const [formData, setFormData] = useState({
     title: "",
